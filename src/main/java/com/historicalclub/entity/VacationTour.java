@@ -8,24 +8,26 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Table(name = "vacation_tours")
 public class VacationTour {
   @Id
   @GeneratedValue
   Long id;
-  LocalDateTime startTime;
-  Integer numberOfPeople;
+  LocalDateTime startDate;
+  private Integer vacationPlaces;
   Boolean vacation;
 
   @ManyToOne(fetch = FetchType.EAGER)

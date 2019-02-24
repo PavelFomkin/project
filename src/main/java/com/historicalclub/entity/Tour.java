@@ -13,13 +13,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name="tours")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class Tour {
@@ -29,11 +34,16 @@ public class Tour {
   private Long id;
 
   @NotNull
-  @Column(unique = true)
-  private String name;
+//  @Column(unique = true)
+  private String title;
 
   private String description;
-  private Integer minNumberOfPlaces;
-  private Integer maxNumberOfPlaces;
+  private String shortDescription;
+  private String duration;
+  private Integer participants;
+
+  private String venue;
   private Integer price;
+//  private List<String> pictures;
+  private String imageSrc;
 }
