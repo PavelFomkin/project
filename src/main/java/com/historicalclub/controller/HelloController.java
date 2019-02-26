@@ -1,5 +1,6 @@
 package com.historicalclub.controller;
 
+import com.historicalclub.TourNotFoundException;
 import com.historicalclub.entity.Tour;
 import com.historicalclub.entity.VacationTour;
 import com.historicalclub.repository.TourRepository;
@@ -8,7 +9,10 @@ import com.historicalclub.repository.VacationTourRepository;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -88,6 +92,14 @@ public class HelloController {
         }
 
         return tourRepository.findAll();
+    }
+
+    @RequestMapping("/tour/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public Tour getTour(@PathVariable Long id, HttpServletResponse response) {
+        System.out.println("show tour number "+id);
+        Optional<Tour> tour = tourRepository.findById(id);
+        return tour.orElseThrow(() -> new TourNotFoundException(id));
     }
 
 }
