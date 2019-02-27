@@ -22,13 +22,13 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 @Builder
 @Table(name = "vacation_tours")
-public class VacationTour {
+public class VacantTour {
   @Id
   @GeneratedValue
   Long id;
   LocalDateTime startDate;
-  private Integer vacationPlaces;
-  Boolean vacation;
+  private Integer vacantPlaces;
+  Boolean vacant;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "tours")
