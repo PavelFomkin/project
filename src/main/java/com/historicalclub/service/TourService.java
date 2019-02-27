@@ -122,4 +122,16 @@ public class TourService {
       vacantTourRepository.save(vacantTour2);
     }
   }
+
+  public VacantTour createVacantTour(VacantTour vacantTour) {
+    return vacantTourRepository.save(vacantTour);
+  }
+
+  public ResponseEntity<?> deleteVacantTour(Long vacId) {
+    System.out.println("delete vacant tour " + vacId);
+    VacantTour vacantTour = vacantTourRepository.findById(vacId).orElseThrow(() -> new TourNotFoundException(vacId));
+    vacantTourRepository.delete(vacantTour);
+    System.out.println("deleted");
+    return ResponseEntity.ok().build();
+  }
 }
