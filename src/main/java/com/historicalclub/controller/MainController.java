@@ -48,9 +48,24 @@ public class MainController {
     return tourService.createVacantTour(vacantTour);
   }
 
-  @RequestMapping(value = "/delete-vacant-tour/{id}", method = RequestMethod.DELETE)
-  public ResponseEntity<?> deleteVacantTour(@PathVariable Long id) {
-    return tourService.deleteVacantTour(id);
+  @RequestMapping(value = "/update-vacant-tour/{vacId}", method = RequestMethod.PUT)
+  public VacantTour updateVacantTour(@PathVariable Long vacId, @Valid @RequestBody VacantTour vacantTour) {
+    return tourService.updateVacantTour(vacId, vacantTour);
+  }
+
+  @RequestMapping(value = "/switch-tour-visibility/{id}", method = RequestMethod.GET)
+  public Tour switchTourVisibility(@PathVariable Long id) {
+    return tourService.switchTourVisibility(id);
+  }
+
+  @RequestMapping(value = "/change-status-vacant-tour/{vacId}", method = RequestMethod.GET)
+  public VacantTour changeStatusVacantTour(@PathVariable Long vacId) {
+    return tourService.changeStatusVacantTour(vacId);
+  }
+
+  @RequestMapping(value = "/delete-vacant-tour/{vacId}", method = RequestMethod.DELETE)
+  public ResponseEntity<?> deleteVacantTour(@PathVariable Long vacId) {
+    return tourService.deleteVacantTour(vacId);
   }
 
   @RequestMapping(value = "/tour/{id}", method = RequestMethod.GET)

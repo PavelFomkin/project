@@ -22,15 +22,18 @@ public class TourService {
   VacantTourRepository vacantTourRepository;
 
   public List<VacantTour> getVacantTours(Long id) {
+    System.out.println("get vacant tours");
     Tour tour = tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
     return vacantTourRepository.findAllByTour(tour);
   }
 
   public VacantTour getVacantTour(Long id) {
+    System.out.println("get vacant tour " + id);
     return vacantTourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
   }
 
   public List<VacantTour> getAvailableVacantTours(Long id) {
+    System.out.println("get all available vacant tours");
     Tour tour = tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
     return vacantTourRepository.findAllByTourAndVacant(tour, true);
   }
@@ -61,6 +64,15 @@ public class TourService {
     return tourRepository.save(currentTour);
   }
 
+  public VacantTour updateVacantTour(Long vacId, VacantTour vacantTour) {
+    System.out.println("update vacant tour " + vacId);
+    VacantTour currentVacantTour = vacantTourRepository.findById(vacId).orElseThrow(() -> new TourNotFoundException(vacId));
+    currentVacantTour.setStartDate(vacantTour.getStartDate());
+    currentVacantTour.setVacantPlaces(vacantTour.getVacantPlaces());
+    currentVacantTour.setVacant(vacantTour.getVacant());
+    return vacantTourRepository.save(currentVacantTour);
+  }
+
   public Tour createTour(Tour tour) {
     System.out.println("create tour");
     return tourRepository.save(tour);
@@ -74,7 +86,34 @@ public class TourService {
     return ResponseEntity.ok().build();
   }
 
+  public VacantTour createVacantTour(VacantTour vacantTour) {
+    return vacantTourRepository.save(vacantTour);
+  }
+
+  public ResponseEntity<?> deleteVacantTour(Long vacId) {
+    System.out.println("delete vacant tour " + vacId);
+    VacantTour vacantTour = vacantTourRepository.findById(vacId).orElseThrow(() -> new TourNotFoundException(vacId));
+    vacantTourRepository.delete(vacantTour);
+    System.out.println("deleted");
+    return ResponseEntity.ok().build();
+  }
+
+  public VacantTour changeStatusVacantTour(Long vacId) {
+    System.out.println("change status vacant tour " + vacId);
+    VacantTour vacantTour = vacantTourRepository.findById(vacId).orElseThrow(() -> new TourNotFoundException(vacId));
+    vacantTour.setVacant(!vacantTour.getVacant());
+    return vacantTourRepository.save(vacantTour);
+  }
+
+  public Tour switchTourVisibility(Long id) {
+    System.out.println("switch visibility for tour " + id);
+    Tour tour = tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
+    tour.setVisible(!tour.getVisible());
+    return tourRepository.save(tour);
+  }
+
   private void fillDatabaseIfEmpty(){
+    System.out.println("fill database");
     if (tourRepository.findAll().isEmpty()) {
       Tour tour1 = Tour.builder()
                        .title("excursion 1")
@@ -86,6 +125,7 @@ public class TourService {
                        .price(1000)
 //                .pictures(Arrays.asList("assets/img/nature.jpg", "assets/img/nature.jpg"))
                        .imageSrc("assets/img/nature.jpg")
+                       .visible(true)
                        .build();
       Tour tour2 = Tour.builder()
                        .title("excursion 2")
@@ -97,6 +137,7 @@ public class TourService {
                        .price(3000)
 //                .pictures(Arrays.asList("assets/img/nature.jpg", "assets/img/nature.jpg"))
                        .imageSrc("assets/img/nature.jpg")
+                       .visible(true)
                        .build();
       tourRepository.save(tour1);
       tourRepository.save(tour2);
@@ -121,17 +162,5 @@ public class TourService {
       vacantTourRepository.save(vacantTour1);
       vacantTourRepository.save(vacantTour2);
     }
-  }
-
-  public VacantTour createVacantTour(VacantTour vacantTour) {
-    return vacantTourRepository.save(vacantTour);
-  }
-
-  public ResponseEntity<?> deleteVacantTour(Long vacId) {
-    System.out.println("delete vacant tour " + vacId);
-    VacantTour vacantTour = vacantTourRepository.findById(vacId).orElseThrow(() -> new TourNotFoundException(vacId));
-    vacantTourRepository.delete(vacantTour);
-    System.out.println("deleted");
-    return ResponseEntity.ok().build();
   }
 }

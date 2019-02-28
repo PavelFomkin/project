@@ -41,9 +41,10 @@ public class Tour {
   private String shortDescription;
   private String duration;
   private Integer participants;
-
   private String venue;
   private Integer price;
 //  private List<String> pictures;
   private String imageSrc;
+
+  private Boolean visible;
 }
