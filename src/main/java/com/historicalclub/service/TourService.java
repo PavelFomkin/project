@@ -19,7 +19,7 @@ public class TourService {
   private TourRepository tourRepository;
 
   @Autowired
-  private VacantDateRepository vacantDateRepository;
+  private VacantDateService vacantDateService;
 
   public List<Tour> getTours() {
     fillDatabaseIfEmpty();
@@ -29,8 +29,7 @@ public class TourService {
 
   public Tour getTour(Long id) {
     System.out.println("get tour " + id);
-    Optional<Tour> tour = tourRepository.findById(id);
-    return tour.orElseThrow(() -> new TourNotFoundException(id));
+    return tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
   }
 
   public Tour updateTour(Long id, Tour tour) {
@@ -79,7 +78,6 @@ public class TourService {
                        .participants(5)
                        .venue("Winter Palace")
                        .price(1000)
-//                .pictures(Arrays.asList("assets/img/nature.jpg", "assets/img/nature.jpg"))
                        .imageUrl("assets/img/nature.jpg")
                        .visible(true)
                        .build();
@@ -91,7 +89,6 @@ public class TourService {
                        .participants(5)
                        .venue("Winter Palace")
                        .price(3000)
-//                .pictures(Arrays.asList("assets/img/nature.jpg", "assets/img/nature.jpg"))
                        .imageUrl("assets/img/nature.jpg")
                        .visible(true)
                        .build();
@@ -114,9 +111,9 @@ public class TourService {
                                          .vacant(false)
                                          .tour(tour1).build();
 
-      vacantDateRepository.save(vacantDate);
-      vacantDateRepository.save(vacantDate1);
-      vacantDateRepository.save(vacantDate2);
+      vacantDateService.createVacantDate(vacantDate);
+      vacantDateService.createVacantDate(vacantDate1);
+      vacantDateService.createVacantDate(vacantDate2);
     }
   }
 }

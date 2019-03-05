@@ -15,14 +15,14 @@ import java.util.List;
 public class VacantDateService {
 
   @Autowired
-  private TourRepository tourRepository;
+  private VacantDateRepository vacantDateRepository;
 
   @Autowired
-  private VacantDateRepository vacantDateRepository;
+  private TourService tourService;
 
   public List<VacantDate> getVacantDates(Long id) {
     System.out.println("get vacant dates");
-    Tour tour = tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
+    Tour tour = tourService.getTour(id);
     return vacantDateRepository.findAllByTour(tour);
   }
 
@@ -33,7 +33,7 @@ public class VacantDateService {
 
   public List<VacantDate> getAvailableVacantDates(Long id) {
     System.out.println("get all available vacant dates");
-    Tour tour = tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
+    Tour tour = tourService.getTour(id);
     return vacantDateRepository.findAllByTourAndVacant(tour, true);
   }
 
