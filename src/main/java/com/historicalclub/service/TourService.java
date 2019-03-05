@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 public class TourService {
 
   @Autowired
-  TourRepository tourRepository;
+  private TourRepository tourRepository;
 
   @Autowired
-  VacantDateRepository vacantDateRepository;
+  private VacantDateRepository vacantDateRepository;
 
   public List<Tour> getTours() {
     fillDatabaseIfEmpty();

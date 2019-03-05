@@ -24,9 +24,10 @@ public class Order {
     String email;
     String phoneNumber;
     Integer participants;
+    String comment;
 
     LocalDateTime bookingDate;
-    Boolean confirm;
+    Boolean confirmation;
 
     Long tourId;
     Long vacantDateId;

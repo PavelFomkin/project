@@ -9,18 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VacantDateService {
 
   @Autowired
-  TourRepository tourRepository;
+  private TourRepository tourRepository;
 
   @Autowired
-  VacantDateRepository vacantDateRepository;
+  private VacantDateRepository vacantDateRepository;
 
   public List<VacantDate> getVacantDates(Long id) {
     System.out.println("get vacant dates");
@@ -65,5 +63,16 @@ public class VacantDateService {
     VacantDate vacantDate = vacantDateRepository.findById(vacId).orElseThrow(() -> new TourNotFoundException(vacId));
     vacantDate.setVacant(!vacantDate.getVacant());
     return vacantDateRepository.save(vacantDate);
+  }
+
+  public void bookVacantDate(Long vacId){
+    System.out.println("change status vacant tour " + vacId);
+    VacantDate vacantDate = vacantDateRepository.findById(vacId).orElseThrow(() -> new TourNotFoundException(vacId));
+    if(vacantDate.getVacant()){
+      vacantDate.setVacant(false);
+      vacantDateRepository.save(vacantDate);
+    } else {
+      throw new TourNotFoundException(vacId);
+    }
   }
 }
