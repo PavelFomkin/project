@@ -30,6 +30,16 @@ public class OrderController {
     return orderService.getOrders(id);
   }
 
+  @RequestMapping(value = "/create-order", method = RequestMethod.POST)
+  public Order createOrder(@Valid @RequestBody Order order) {
+    return orderService.createOrder(order);
+  }
+
+  @RequestMapping(value = "/delete-order/{orderId}", method = RequestMethod.DELETE)
+  public ResponseEntity<?> deleteOrder(@PathVariable Long orderId) {
+    return orderService.deleteOrder(orderId);
+  }
+
   @RequestMapping(value = "/confirmation/{id}", method = RequestMethod.GET)
   public Order confirmOrder(@PathVariable Long id) {
     return orderService.confirmOrder(id);
@@ -38,30 +48,5 @@ public class OrderController {
   @RequestMapping(value = "/cancel-confirmation/{id}", method = RequestMethod.GET)
   public Order cancelOrderConfirmation(@PathVariable Long id) {
     return orderService.cancelOrderConfirmation(id);
-  }
-
-//  @RequestMapping(value = "/switch-tour-visibility/{id}", method = RequestMethod.GET)
-//  public Tour switchTourVisibility(@PathVariable Long id) {
-//    return tourService.switchTourVisibility(id);
-//  }
-//
-//  @RequestMapping(value = "/tour/{id}", method = RequestMethod.GET)
-//  public Tour getTour(@PathVariable Long id) {
-//    return tourService.getTour(id);
-//  }
-//
-  @RequestMapping(value = "/create-order", method = RequestMethod.POST)
-  public Order createOrder(@Valid @RequestBody Order order) {
-    return orderService.createOrder(order);
-  }
-//
-//  @RequestMapping(value = "/update-tour/{id}", method = RequestMethod.PUT)
-//  public Tour updateTour(@PathVariable Long id, @Valid @RequestBody Tour tour) {
-//    return tourService.updateTour(id, tour);
-//  }
-
-  @RequestMapping(value = "/delete-order/{orderId}", method = RequestMethod.DELETE)
-  public ResponseEntity<?> deleteOrder(@PathVariable Long orderId) {
-    return orderService.deleteOrder(orderId);
   }
 }

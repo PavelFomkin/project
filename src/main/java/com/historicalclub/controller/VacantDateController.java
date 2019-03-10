@@ -41,13 +41,13 @@ public class VacantDateController {
     return vacantDateService.updateVacantDate(vacId, vacantDate);
   }
 
-  @RequestMapping(value = "/change-status-vacant-date/{vacId}", method = RequestMethod.GET)
-  public VacantDate changeStatusVacantDate(@PathVariable Long vacId) {
-    return vacantDateService.changeStatusVacantDate(vacId);
-  }
-
   @RequestMapping(value = "/delete-vacant-date/{vacId}", method = RequestMethod.DELETE)
   public ResponseEntity<?> deleteVacantDate(@PathVariable Long vacId) {
     return vacantDateService.deleteVacantDate(vacId);
+  }
+
+  @RequestMapping(value = "/change-status-vacant-date/{vacId}", method = RequestMethod.GET)
+  public VacantDate changeStatusVacantDate(@PathVariable Long vacId) {
+    return vacantDateService.changeStatusVacantDate(vacId);
   }
 }

@@ -1,15 +1,15 @@
 package com.historicalclub.controller;
 
 import com.historicalclub.entity.Tour;
-import com.historicalclub.entity.VacantDate;
 
 import com.historicalclub.service.TourService;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.historicalclub.service.VacantDateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,22 +20,17 @@ public class TourController {
   @Autowired
   TourService tourService;
 
-  @RequestMapping("/")
-  public String index() {
-    return "Greetings from Spring Boot!";
-  }
-
   @RequestMapping(value = "/tours", method = RequestMethod.GET)
-  public List<Tour> getTours() {
+  public List<Tour> getTours(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+
+    System.out.println("Type: " + request.getAuthType());
+    System.out.println(headers.get("Authorization"));
+    System.out.println(headers.toString());
+
     return tourService.getTours();
   }
 
-  @RequestMapping(value = "/switch-tour-visibility/{id}", method = RequestMethod.GET)
-  public Tour switchTourVisibility(@PathVariable Long id) {
-    return tourService.switchTourVisibility(id);
-  }
-
-  @RequestMapping(value = "/tour/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/tours/{id}", method = RequestMethod.GET)
   public Tour getTour(@PathVariable Long id) {
     return tourService.getTour(id);
   }
@@ -53,5 +48,10 @@ public class TourController {
   @RequestMapping(value = "/delete-tour/{id}", method = RequestMethod.DELETE)
   public ResponseEntity<?> deleteTour(@PathVariable Long id) {
     return tourService.deleteTour(id);
+  }
+
+  @RequestMapping(value = "/switch-tour-visibility/{id}", method = RequestMethod.GET)
+  public Tour switchTourVisibility(@PathVariable Long id) {
+    return tourService.switchTourVisibility(id);
   }
 }
