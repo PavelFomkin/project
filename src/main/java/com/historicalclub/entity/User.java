@@ -1,11 +1,12 @@
 package com.historicalclub.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
 public class User {
     String username;
     String password;

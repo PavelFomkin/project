@@ -22,11 +22,6 @@ public class TourController {
 
   @RequestMapping(value = "/tours", method = RequestMethod.GET)
   public List<Tour> getTours(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
-
-    System.out.println("Type: " + request.getAuthType());
-    System.out.println(headers.get("Authorization"));
-    System.out.println(headers.toString());
-
     return tourService.getTours();
   }
 
