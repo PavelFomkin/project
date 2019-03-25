@@ -1,5 +1,6 @@
 package com.historicalclub.service;
 
+import com.historicalclub.error.NoAccessException;
 import com.historicalclub.error.TourNotFoundException;
 import com.historicalclub.error.ToursNotFoundException;
 import com.historicalclub.entity.Tour;
@@ -43,7 +44,7 @@ public class TourService {
     if(tour.getVisible()){
       return tour;
     } else {
-      throw new ResourceAccessException("You don't have a permission");
+      throw new NoAccessException();
     }
   }
 

@@ -10,6 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -18,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                             "/available-tours/*",
                                             "/vacant-dates/*",
                                             "/vacant-date/*",
-                                            "/booking/*",
+                                            "/create-order",
                                             "/login"};
 
     @Override
@@ -34,8 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.applyPermitDefaultValues();
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+
         http
-            .cors().configurationSource(resource -> new CorsConfiguration().applyPermitDefaultValues())
+            .cors().configurationSource(resource -> corsConfiguration)
             .and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().authorizeRequests().antMatchers(whiteListedAuthUrls).permitAll()

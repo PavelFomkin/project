@@ -12,4 +12,6 @@ public interface VacantDateRepository extends JpaRepository<VacantDate, Long> {
 
   Optional<List<VacantDate>> findAllByTourAndVacant(Tour tour, Boolean vacant);
 
+  Optional<VacantDate> findByIdAndVacant(Long vacId, Boolean vacant);
+
 }

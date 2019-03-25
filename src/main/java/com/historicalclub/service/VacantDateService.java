@@ -24,18 +24,14 @@ public class VacantDateService {
   public List<VacantDate> getVacantDates(Long id) {
     System.out.println("get vacant dates");
     Tour tour = tourService.getTour(id);
-    return getVacantDates(tour);
-  }
-
-
-  public List<VacantDate> getVacantDates(Tour tour){
     return vacantDateRepository.findAllByTour(tour)
                                .orElseThrow(() -> new VacantDatesNotFoundException(tour.getId()));
   }
 
-  public VacantDate getVacantDate(Long id) {
-    System.out.println("get vacant date " + id);
-    return vacantDateRepository.findById(id).orElseThrow(() -> new VacantDateNotFoundException(id));
+  public VacantDate getVacantDate(Long vacId) {
+    System.out.println("get vacant date " + vacId);
+    return vacantDateRepository.findByIdAndVacant(vacId, true)
+                               .orElseThrow(() -> new VacantDateNotFoundException(vacId));
   }
 
   public List<VacantDate> getAvailableVacantDates(Long id) {

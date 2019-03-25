@@ -27,7 +27,7 @@ public class VacantDateController {
   }
 
   @RequestMapping(value = "/all-vacant-dates/{id}", method = RequestMethod.GET)
-  public List<VacantDate> getAllVacantDates(@PathVariable Long id) {
+  public List<VacantDate> getVacantDates(@PathVariable Long id) {
     return vacantDateService.getVacantDates(id);
   }
 
