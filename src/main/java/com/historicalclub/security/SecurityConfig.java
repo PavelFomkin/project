@@ -14,6 +14,13 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private String[] whiteListedAuthUrls = {"/available-tours",
+                                            "/available-tours/*",
+                                            "/vacant-dates/*",
+                                            "/vacant-date/*",
+                                            "/booking/*",
+                                            "/login"};
+
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
@@ -28,15 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().configurationSource(resource -> new CorsConfiguration().applyPermitDefaultValues())
-                .and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests().antMatchers("/login").permitAll()
-                .antMatchers("/tours","tours/*").permitAll()
-                .anyRequest().authenticated()
-                .and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .cors().configurationSource(resource -> new CorsConfiguration().applyPermitDefaultValues())
+            .and().csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().authorizeRequests().antMatchers(whiteListedAuthUrls).permitAll()
+            .and().authorizeRequests().anyRequest().authenticated()
+            .and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                  .addFilter(new JWTAuthorizationFilter(authenticationManager()));
     }
 }
 

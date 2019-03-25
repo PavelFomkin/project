@@ -14,7 +14,7 @@ import java.util.List;
 public class VacantDateController {
 
   @Autowired
-  VacantDateService vacantDateService;
+  private VacantDateService vacantDateService;
 
   @RequestMapping(value = "/vacant-dates/{id}", method = RequestMethod.GET)
   public List<VacantDate> getAvailableVacantDates(@PathVariable Long id) {

@@ -1,6 +1,7 @@
 package com.historicalclub.service;
 
 import com.historicalclub.TourNotFoundException;
+import com.historicalclub.ToursNotFoundException;
 import com.historicalclub.entity.Tour;
 import com.historicalclub.entity.VacantDate;
 import com.historicalclub.repository.TourRepository;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 @Service
 public class TourService {
@@ -27,9 +29,24 @@ public class TourService {
     return tourRepository.findAll();
   }
 
+  public List<Tour> getAvailableTours() {
+    System.out.println("show available tours");
+    return tourRepository.findAllByVisible(true).orElseThrow(ToursNotFoundException::new);
+  }
+
   public Tour getTour(Long id) {
     System.out.println("get tour " + id);
     return tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
+  }
+
+  public Tour getTourIfAvailable(Long id) {
+    System.out.println("get tour " + id);
+    Tour tour = tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
+    if(tour.getVisible()){
+      return tour;
+    } else {
+      throw new ResourceAccessException("You don't have a permission");
+    }
   }
 
   public Tour updateTour(Long id, Tour tour) {

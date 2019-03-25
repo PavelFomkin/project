@@ -18,11 +18,21 @@ import org.springframework.web.bind.annotation.*;
 public class TourController {
 
   @Autowired
-  TourService tourService;
+  private TourService tourService;
+
+  @RequestMapping(value = "/available-tours", method = RequestMethod.GET)
+  public List<Tour> getAvailableTours(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+    return tourService.getAvailableTours();
+  }
 
   @RequestMapping(value = "/tours", method = RequestMethod.GET)
   public List<Tour> getTours(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
     return tourService.getTours();
+  }
+
+  @RequestMapping(value = "/available-tours/{id}", method = RequestMethod.GET)
+  public Tour getAvailableTour(@PathVariable Long id) {
+    return tourService.getTourIfAvailable(id);
   }
 
   @RequestMapping(value = "/tours/{id}", method = RequestMethod.GET)

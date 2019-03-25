@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+
 @ControllerAdvice
 public class TourNotFoundAdvice {
   @ResponseBody
@@ -14,4 +15,25 @@ public class TourNotFoundAdvice {
   String tourNotFoundHandler(TourNotFoundException ex) {
     return ex.getMessage();
   }
+
+//  @ResponseBody
+//  @ExceptionHandler(RuntimeException.class)
+//  @ResponseStatus(HttpStatus.NOT_FOUND)
+//  String toursNotFoundHandler(ToursNotFoundException ex) {
+//    return ex.getMessage();
+//  }
+//
+//  @ResponseBody
+//  @ExceptionHandler(RuntimeException.class)
+//  @ResponseStatus(HttpStatus.NOT_FOUND)
+//  String vacantDateNotFoundHandler(VacantDateNotFoundException ex) {
+//    return ex.getMessage();
+//  }
+//
+//  @ResponseBody
+//  @ExceptionHandler(RuntimeException.class)
+//  @ResponseStatus(HttpStatus.NOT_FOUND)
+//  String vacantDatesNotFoundHandler(VacantDatesNotFoundException ex) {
+//    return ex.getMessage();
+//  }
 }
