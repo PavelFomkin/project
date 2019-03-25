@@ -1,11 +1,10 @@
 package com.historicalclub.service;
 
-import com.historicalclub.TourNotFoundException;
-import com.historicalclub.VacantDateNotFoundException;
-import com.historicalclub.VacantDatesNotFoundException;
+import com.historicalclub.error.TourNotFoundException;
+import com.historicalclub.error.VacantDateNotFoundException;
+import com.historicalclub.error.VacantDatesNotFoundException;
 import com.historicalclub.entity.Tour;
 import com.historicalclub.entity.VacantDate;
-import com.historicalclub.repository.TourRepository;
 import com.historicalclub.repository.VacantDateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

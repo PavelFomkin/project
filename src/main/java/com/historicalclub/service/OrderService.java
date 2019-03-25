@@ -1,6 +1,6 @@
 package com.historicalclub.service;
 
-import com.historicalclub.TourNotFoundException;
+import com.historicalclub.error.TourNotFoundException;
 import com.historicalclub.entity.Order;
 import com.historicalclub.repository.OrderRepository;
 import java.util.List;
