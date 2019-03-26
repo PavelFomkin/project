@@ -1,5 +1,6 @@
 package com.historicalclub.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,6 +17,12 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("${security.username}")
+    private String username;
+
+    @Value("${security.password}")
+    private String password;
+
     private String[] whiteListedAuthUrls = {"/available-tours",
                                             "/available-tours/*",
                                             "/vacant-dates/*",
@@ -26,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("user")).roles("USER");
+                .withUser(username).password(passwordEncoder().encode(password)).roles("ADMIN");
     }
 
     @Bean

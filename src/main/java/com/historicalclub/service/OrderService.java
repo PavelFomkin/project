@@ -1,5 +1,7 @@
 package com.historicalclub.service;
 
+import com.historicalclub.entity.Tour;
+import com.historicalclub.entity.VacantDate;
 import com.historicalclub.error.TourNotFoundException;
 import com.historicalclub.entity.Order;
 import com.historicalclub.repository.OrderRepository;
@@ -7,15 +9,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderService {
+
+  @Autowired
+  private EmailService emailService;
 
   @Autowired
   private OrderRepository orderRepository;
 
   @Autowired
   private VacantDateService vacantDateService;
+
+  @Autowired
+  private TourService tourService;
 
   public List<Order> getOrders() {
     return orderRepository.findAll();
@@ -33,8 +42,11 @@ public class OrderService {
     return ResponseEntity.ok().build();
   }
 
+  @Transactional
   public Order createOrder(Order order) {
-    vacantDateService.bookVacantDate(order.getVacantDateId());
+    Tour tour = tourService.getTourIfAvailable(order.getTourId());
+    VacantDate vacantDate = vacantDateService.bookVacantDate(order.getVacantDateId());
+    emailService.sendBookingEmail(order, tour, vacantDate);
     return orderRepository.save(order);
   }
 

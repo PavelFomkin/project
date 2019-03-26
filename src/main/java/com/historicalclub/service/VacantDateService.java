@@ -1,6 +1,5 @@
 package com.historicalclub.service;
 
-import com.historicalclub.error.TourNotFoundException;
 import com.historicalclub.error.VacantDateNotFoundException;
 import com.historicalclub.error.VacantDatesNotFoundException;
 import com.historicalclub.entity.Tour;
@@ -70,14 +69,14 @@ public class VacantDateService {
     return vacantDateRepository.save(vacantDate);
   }
 
-  public void bookVacantDate(Long vacId){
+  public VacantDate bookVacantDate(Long vacId){
     System.out.println("change status vacant tour " + vacId);
     VacantDate vacantDate = vacantDateRepository.findById(vacId).orElseThrow(() -> new VacantDateNotFoundException(vacId));
     if(vacantDate.getVacant()){
       vacantDate.setVacant(false);
-      vacantDateRepository.save(vacantDate);
+      return vacantDateRepository.save(vacantDate);
     } else {
-      throw new TourNotFoundException(vacId);
+      throw new VacantDateNotFoundException(vacId);
     }
   }
 }
