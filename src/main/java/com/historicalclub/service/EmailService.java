@@ -14,8 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
+  private final JavaMailSender emailSender;
+
   @Autowired
-  private JavaMailSender emailSender;
+  public EmailService(JavaMailSender emailSender) {
+    this.emailSender = emailSender;
+  }
 
   private void send(String to, String subject, String text) {
     MimeMessage message = this.emailSender.createMimeMessage();

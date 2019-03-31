@@ -1,5 +1,7 @@
 package com.historicalclub.entity;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name="tours")
@@ -34,6 +38,12 @@ public class Tour {
   private Integer price;
   private Boolean visible;
   private String imageUrl;
+  private LocalTime minStartTime;
+  private LocalTime maxStartTime;
+
+  @ElementCollection
+  @CollectionTable(name = "disabledDates")
+  private List<java.time.LocalDate> disabledDates;
 
   @ElementCollection
   @CollectionTable(name = "pictures")

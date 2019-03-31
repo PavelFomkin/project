@@ -14,17 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderService {
 
-  @Autowired
-  private EmailService emailService;
+  private final EmailService emailService;
+  private final OrderRepository orderRepository;
+  private final VacantDateService vacantDateService;
+  private final TourService tourService;
 
   @Autowired
-  private OrderRepository orderRepository;
-
-  @Autowired
-  private VacantDateService vacantDateService;
-
-  @Autowired
-  private TourService tourService;
+  public OrderService(EmailService emailService, OrderRepository orderRepository, VacantDateService vacantDateService, TourService tourService) {
+    this.emailService = emailService;
+    this.orderRepository = orderRepository;
+    this.vacantDateService = vacantDateService;
+    this.tourService = tourService;
+  }
 
   public List<Order> getOrders() {
     return orderRepository.findAll();

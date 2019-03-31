@@ -5,11 +5,9 @@ import com.historicalclub.entity.Tour;
 import com.historicalclub.service.TourService;
 import java.util.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +15,20 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class TourController {
 
+  private final TourService tourService;
+
   @Autowired
-  private TourService tourService;
+  public TourController(TourService tourService) {
+    this.tourService = tourService;
+  }
 
   @RequestMapping(value = "/available-tours", method = RequestMethod.GET)
-  public List<Tour> getAvailableTours(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+  public List<Tour> getAvailableTours() {
     return tourService.getAvailableTours();
   }
 
   @RequestMapping(value = "/tours", method = RequestMethod.GET)
-  public List<Tour> getTours(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+  public List<Tour> getTours() {
     return tourService.getTours();
   }
 

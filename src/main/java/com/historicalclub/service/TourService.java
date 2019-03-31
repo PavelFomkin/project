@@ -4,33 +4,37 @@ import com.historicalclub.error.NoAccessException;
 import com.historicalclub.error.TourNotFoundException;
 import com.historicalclub.error.ToursNotFoundException;
 import com.historicalclub.entity.Tour;
-import com.historicalclub.entity.VacantDate;
 import com.historicalclub.repository.TourRepository;
-import java.time.LocalDateTime;
+
+import java.math.BigInteger;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
 @Service
 public class TourService {
 
-  @Autowired
-  private TourRepository tourRepository;
+  private final TourRepository tourRepository;
 
   @Autowired
-  private VacantDateService vacantDateService;
-
-  public List<Tour> getTours() {
-    fillDatabaseIfEmpty();
-    System.out.println("show tours");
-    return tourRepository.findAll();
+  public TourService(TourRepository tourRepository) {
+    this.tourRepository = tourRepository;
   }
 
-  public List<Tour> getAvailableTours() {
-    System.out.println("show available tours");
-    return tourRepository.findAllByVisible(true).orElseThrow(ToursNotFoundException::new);
+  public List<Tour> getAvailableTours(){
+    return tourRepository.getPreviewAvailableTours().stream()
+            .map(this::mapObjToPreviewTour)
+            .collect(Collectors.toList());
+  }
+
+  public List<Tour> getTours() {
+    System.out.println("show tours");
+    return tourRepository.getPreviewTours().stream()
+            .map(this::mapObjToPreviewTour)
+            .collect(Collectors.toList());
   }
 
   public Tour getTour(Long id) {
@@ -83,53 +87,14 @@ public class TourService {
     return tourRepository.save(tour);
   }
 
-  private void fillDatabaseIfEmpty(){
-    System.out.println("fill database");
-    if (tourRepository.findAll().isEmpty()) {
-      Tour tour1 = Tour.builder()
-                       .title("excursion 1")
-                       .shortDescription("short description")
-                       .description("description")
-                       .duration("a week")
-                       .participants(5)
-                       .venue("Winter Palace")
-                       .price(1000)
-                       .imageUrl("assets/img/nature.jpg")
-                       .visible(true)
-                       .build();
-      Tour tour2 = Tour.builder()
-                       .title("excursion 2")
-                       .shortDescription("short description 2")
-                       .description("description 2")
-                       .duration("two weeks")
-                       .participants(5)
-                       .venue("Winter Palace")
-                       .price(3000)
-                       .imageUrl("assets/img/nature.jpg")
-                       .visible(true)
-                       .build();
-      tourRepository.save(tour1);
-      tourRepository.save(tour2);
-
-      VacantDate vacantDate = VacantDate.builder()
-                                        .startDate(LocalDateTime.now())
-                                        .vacantPlaces(tour1.getParticipants())
-                                        .vacant(true)
-                                        .tour(tour1).build();
-      VacantDate vacantDate1 = VacantDate.builder()
-                                         .startDate(LocalDateTime.now().plusDays(1))
-                                         .vacantPlaces(tour1.getParticipants())
-                                         .vacant(true)
-                                         .tour(tour1).build();
-      VacantDate vacantDate2 = VacantDate.builder()
-                                         .startDate(LocalDateTime.now().plusDays(2))
-                                         .vacantPlaces(tour1.getParticipants())
-                                         .vacant(false)
-                                         .tour(tour1).build();
-
-      vacantDateService.createVacantDate(vacantDate);
-      vacantDateService.createVacantDate(vacantDate1);
-      vacantDateService.createVacantDate(vacantDate2);
-    }
+  private Tour mapObjToPreviewTour(Object data){
+    Object[] columns = (Object[]) data;
+    Tour tour = new Tour();
+    tour.setId(((BigInteger) columns[0]).longValue());
+    tour.setTitle((String) columns[1]);
+    tour.setShortDescription((String) columns[2]);
+    tour.setImageUrl((String) columns[3]);
+    tour.setVisible((Boolean) columns[4]);
+    return tour;
   }
 }

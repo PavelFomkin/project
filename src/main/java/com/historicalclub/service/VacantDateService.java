@@ -9,22 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class VacantDateService {
 
-  @Autowired
-  private VacantDateRepository vacantDateRepository;
+  private final VacantDateRepository vacantDateRepository;
+  private final TourService tourService;
 
   @Autowired
-  private TourService tourService;
+  public VacantDateService(VacantDateRepository vacantDateRepository, TourService tourService) {
+    this.vacantDateRepository = vacantDateRepository;
+    this.tourService = tourService;
+  }
 
   public List<VacantDate> getVacantDates(Long id) {
     System.out.println("get vacant dates");
     Tour tour = tourService.getTour(id);
-    return vacantDateRepository.findAllByTour(tour)
-                               .orElseThrow(() -> new VacantDatesNotFoundException(tour.getId()));
+    return vacantDateRepository.findAllByTour(tour).orElse(Collections.emptyList());
   }
 
   public VacantDate getVacantDate(Long vacId) {
@@ -36,8 +39,7 @@ public class VacantDateService {
   public List<VacantDate> getAvailableVacantDates(Long id) {
     System.out.println("get all available vacant dates");
     Tour tour = tourService.getTour(id);
-    return vacantDateRepository.findAllByTourAndVacant(tour, true)
-                               .orElseThrow(() -> new VacantDatesNotFoundException(id));
+    return vacantDateRepository.findAllByTourAndVacant(tour, true).orElse(Collections.emptyList());
   }
 
   public VacantDate updateVacantDate(Long vacId, VacantDate vacantDate) {

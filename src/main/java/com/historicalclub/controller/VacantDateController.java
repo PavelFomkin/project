@@ -13,8 +13,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class VacantDateController {
 
+  private final VacantDateService vacantDateService;
+
   @Autowired
-  private VacantDateService vacantDateService;
+  public VacantDateController(VacantDateService vacantDateService) {
+    this.vacantDateService = vacantDateService;
+  }
 
   @RequestMapping(value = "/vacant-dates/{id}", method = RequestMethod.GET)
   public List<VacantDate> getAvailableVacantDates(@PathVariable Long id) {
