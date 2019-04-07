@@ -22,7 +22,6 @@ import java.time.LocalTime;
 public class Calendar {
   @Id
   LocalDate date;
-  Boolean vacant;
 
   Long orderId;
 }

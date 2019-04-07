@@ -47,7 +47,7 @@ public class OrderService {
   public Order createOrder(Order order) {
     Tour tour = tourService.getTourIfAvailable(order.getTourId());
     VacantDate vacantDate = vacantDateService.bookVacantDate(order.getVacantDateId());
-    emailService.sendBookingEmail(order, tour, vacantDate);
+//    emailService.sendBookingEmail(order, tour, vacantDate);
     return orderRepository.save(order);
   }
 

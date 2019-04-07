@@ -10,8 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name="tours")
@@ -28,9 +26,10 @@ public class Tour {
   @NotNull
   @Column(unique = true)
   private String title;
-  @Column(length=300)
-  private String shortDescription;
   @Column(length=1000)
+  private String shortDescription;
+  @Lob
+  @Column
   private String description;
   private String duration;
   private Integer participants;
@@ -43,7 +42,11 @@ public class Tour {
 
   @ElementCollection
   @CollectionTable(name = "disabledDates")
-  private List<java.time.LocalDate> disabledDates;
+  private List<LocalDate> disabledDates;
+
+  @ElementCollection
+  @CollectionTable(name = "disabledDaysOfWeek")
+  private List<Integer> disabledDaysOfWeek;
 
   @ElementCollection
   @CollectionTable(name = "pictures")

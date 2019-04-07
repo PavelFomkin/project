@@ -25,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private String[] whiteListedAuthUrls = {"/available-tours",
                                             "/available-tours/*",
+                                            "/disabled-dates",
                                             "/vacant-dates/*",
                                             "/vacant-date/*",
                                             "/create-order",

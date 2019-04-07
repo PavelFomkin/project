@@ -64,6 +64,10 @@ public class TourService {
     currentTour.setPrice(tour.getPrice());
     currentTour.setImageUrl(tour.getImageUrl());
     currentTour.setPictures(tour.getPictures());
+    currentTour.setMinStartTime(tour.getMinStartTime());
+    currentTour.setMaxStartTime(tour.getMaxStartTime());
+    currentTour.setDisabledDaysOfWeek(tour.getDisabledDaysOfWeek());
+    currentTour.setDisabledDates(tour.getDisabledDates());
     return tourRepository.save(currentTour);
   }
 
