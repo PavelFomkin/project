@@ -2,7 +2,6 @@ package com.historicalclub.service;
 
 import com.historicalclub.error.NoAccessException;
 import com.historicalclub.error.TourNotFoundException;
-import com.historicalclub.error.ToursNotFoundException;
 import com.historicalclub.entity.Tour;
 import com.historicalclub.repository.TourRepository;
 
@@ -17,11 +16,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class TourService {
 
-  private final TourRepository tourRepository;
+  @Autowired
+  private TourRepository tourRepository;
 
   @Autowired
-  public TourService(TourRepository tourRepository) {
-    this.tourRepository = tourRepository;
+  private PictureService pictureService;
+
+  public void checkThatTourExists(Long id){
+    if (!tourRepository.existsById(id)) {
+      throw new TourNotFoundException(id);
+    }
   }
 
   public List<Tour> getAvailableTours(){
@@ -63,7 +67,6 @@ public class TourService {
     currentTour.setParticipants(tour.getParticipants());
     currentTour.setPrice(tour.getPrice());
     currentTour.setImageUrl(tour.getImageUrl());
-    currentTour.setPictures(tour.getPictures());
     currentTour.setMinStartTime(tour.getMinStartTime());
     currentTour.setMaxStartTime(tour.getMaxStartTime());
     currentTour.setDisabledDaysOfWeek(tour.getDisabledDaysOfWeek());
@@ -80,6 +83,7 @@ public class TourService {
     System.out.println("delete tour " + id);
     Tour tour = tourRepository.findById(id).orElseThrow(() -> new TourNotFoundException(id));
     tourRepository.delete(tour);
+    pictureService.deletePicturesByTourId(id);
     System.out.println("deleted");
     return ResponseEntity.ok().build();
   }

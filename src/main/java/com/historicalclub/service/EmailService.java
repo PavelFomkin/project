@@ -2,7 +2,6 @@ package com.historicalclub.service;
 
 import com.historicalclub.entity.Order;
 import com.historicalclub.entity.Tour;
-import com.historicalclub.entity.VacantDate;
 import java.time.format.DateTimeFormatter;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -34,9 +33,9 @@ public class EmailService {
     }
   }
 
-  public void sendBookingEmail(Order order, Tour tour, VacantDate vacantDate){
+  public void sendBookingEmail(Order order, Tour tour){
     String title = "Бронирование экскурсии";
-    String date = vacantDate.getStartDate().format(DateTimeFormatter.ofPattern("H:mm d/MM/yyyy"));
+    String date = order.getDate().format(DateTimeFormatter.ofPattern("H:mm d/MM/yyyy"));
     String message = String.format(
         "Здравствуйте %s,\n"+
         "Вы забронировали экскурсию %s.\n"+

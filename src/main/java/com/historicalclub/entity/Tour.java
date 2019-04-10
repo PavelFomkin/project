@@ -47,8 +47,4 @@ public class Tour {
   @ElementCollection
   @CollectionTable(name = "disabledDaysOfWeek")
   private List<Integer> disabledDaysOfWeek;
-
-  @ElementCollection
-  @CollectionTable(name = "pictures")
-  private List<String> pictures;
 }

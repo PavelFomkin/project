@@ -1,7 +1,7 @@
 package com.historicalclub.service;
 
+import com.historicalclub.entity.Calendar;
 import com.historicalclub.entity.Tour;
-import com.historicalclub.entity.VacantDate;
 import com.historicalclub.error.TourNotFoundException;
 import com.historicalclub.entity.Order;
 import com.historicalclub.repository.OrderRepository;
@@ -16,15 +16,16 @@ public class OrderService {
 
   private final EmailService emailService;
   private final OrderRepository orderRepository;
-  private final VacantDateService vacantDateService;
   private final TourService tourService;
+  private final CalendarService calendarService;
 
   @Autowired
-  public OrderService(EmailService emailService, OrderRepository orderRepository, VacantDateService vacantDateService, TourService tourService) {
+  public OrderService(EmailService emailService, OrderRepository orderRepository,
+      TourService tourService, CalendarService calendarService) {
     this.emailService = emailService;
     this.orderRepository = orderRepository;
-    this.vacantDateService = vacantDateService;
     this.tourService = tourService;
+    this.calendarService = calendarService;
   }
 
   public List<Order> getOrders() {
@@ -38,6 +39,7 @@ public class OrderService {
   public ResponseEntity<?> deleteOrder(Long orderId) {
     System.out.println("delete order " + orderId);
     Order order = orderRepository.findById(orderId).orElseThrow(() -> new TourNotFoundException(orderId));
+    calendarService.deleteDisabledDate(order.getDate().toLocalDate());
     orderRepository.delete(order);
     System.out.println("deleted");
     return ResponseEntity.ok().build();
@@ -45,9 +47,10 @@ public class OrderService {
 
   @Transactional
   public Order createOrder(Order order) {
+    System.out.println("create order");
     Tour tour = tourService.getTourIfAvailable(order.getTourId());
-    VacantDate vacantDate = vacantDateService.bookVacantDate(order.getVacantDateId());
-//    emailService.sendBookingEmail(order, tour, vacantDate);
+    calendarService.addDisabledDate(new Calendar(order.getDate().toLocalDate(), order.getId()));
+//    emailService.sendBookingEmail(order, tour);
     return orderRepository.save(order);
   }
 

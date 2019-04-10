@@ -1,5 +1,7 @@
 package com.historicalclub.entity;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -30,5 +32,5 @@ public class Order {
     Boolean confirmation;
 
     Long tourId;
-    Long vacantDateId;
+    LocalDateTime date;
 }
